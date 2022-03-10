@@ -1,3 +1,22 @@
+import enum
+
+class Type(enum.Enum):
+    BASE = "basse"
+    IF = "if"
+    IF_ELSE = "if_else"
+    AND = "and"
+    OR = "or"
+    ANY = "any"
+    ALL = "all"
+
+class Operator(enum.Enum):
+    EXIST = "exist"
+    NOT_EXIST = "not_exist"
+    LESS_THAN = "lt"
+    GREATER_THAN = "gt"
+    EQUAL = "eq"
+    ANY = "any"
+    CONTAIN = "contain"
 
 class Rule:
 
@@ -6,28 +25,8 @@ class Rule:
         self.rtrue = None
         self.rfalse = None
         self.path = None
-        self.rule =None
+        self.rule = None
+        self.operator = None
         self.value = None
-        self.error_msg = None
+        self.fail_msg = None
         self.success_msg = None
-
-
-
-
-
-
-
-
-
-
-rule_class:
-{
-    type: "type"
-    true: "rule"/o
-    false: "rule"/o
-    path: "path"
-    rule: "rule | base_rule"/o
-    value: "string | int | list"
-    error_mesege: "string"
-    secsses_msg: "string"
-}
