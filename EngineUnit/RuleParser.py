@@ -2,7 +2,6 @@ import json
 from enums import Type, Operator, MessageType
 from Rule import Rule
 
-
 class RuleParser:
     def __init__(self, rule_path):
         self.rule_path = rule_path
@@ -10,6 +9,15 @@ class RuleParser:
                                                  Operator.ANY, Operator.CONTAIN]
         self.rule_scheme = None
         self.rules = []
+        self.type_dict = {Type.BASE: self.parseBase,
+                     Type.ALL: self.parseAll,
+                     Type.ANY: self.parseAny,
+                     Type.AND: self.parseAnd,
+                     Type.OR: self.parseOr,
+                     Type.CONDITION: self.parseCondition,
+
+                     }
+
         self.readJson()
 
     def readJson(self):
@@ -28,17 +36,15 @@ class RuleParser:
 
     def parser(self, ruleScheme):
         rule:Rule
-        type_dict = {Type.BASE: self.parseBase,
-                     Type.ALL: self.parseAll,
-                     Type.ANY: self.parseAny,
-        }
+
         if type(ruleScheme) is str:
             rule = self.parseBase(ruleScheme)
         else:
             op = set(ruleScheme.keys()).intersection({element.value for element in Type})
             if len(op) == 1:
                 operator = op.pop()
-                rule = type_dict[operator](ruleScheme);
+                parserFunc = self.type_dict[Type(operator)]
+                rule = parserFunc(ruleScheme);
             else:
                 raise "ERROR in Parser method there is more than or less than one operator"
         return rule
@@ -54,22 +60,23 @@ class RuleParser:
         if (rule_elements_size > 0) and (rule_elements[2] in self.__operators_should_contain_value):
             rule_obj.value = rule_elements[2]
             rule_elements_size -= 1
+        #print(rule_obj.type)
         for i in range(1,rule_elements_size+1):
             msg_type, msg_content = rule_elements[-i].split("=")
             match msg_type:
-                case MessageType.SUCCESS:
-                    rule_obj.success_msg = MessageType.SUCCESS,
-                case MessageType.FAIL:
-                    rule_obj.fail_msg = MessageType.FAIL,
+                case MessageType.SUCCESS_MSG.value:
+                    rule_obj.success_msg = msg_content,
+                case MessageType.FAIL_MSG.value:
+                    rule_obj.fail_msg = msg_content,
                 case _:
-                    raise f"message type is not exist\nPlease use one of this types: {MessageType}"
+                    raise f"message type is not exist\nPlease use one of this types: {','.join(i.value for i in MessageType)}"
         return rule_obj
 
 
     def parseCondition(self, ruleScheme):
         rule_obj = Rule()
         rule_obj.type = Type.CONDITION
-        rule_obj.rule = self.parser(ruleScheme[Type.CONDITION])
+        rule_obj.rule = self.parser(ruleScheme[Type.CONDITION.value])
         if "true" in ruleScheme:
             rule_obj.rtrue = self.parser(ruleScheme["true"])
         if "false" in ruleScheme:
@@ -80,20 +87,22 @@ class RuleParser:
 
     def parseAnd(self, ruleScheme:dict):
         rule_obj = Rule()
-        rule_obj.rule = [self.parser(item) for item in ruleScheme[Type.AND]]
+        rule_obj.type = Type.AND
+        rule_obj.rule = [self.parser(item) for item in ruleScheme[Type.AND.value]]
         self.messages(ruleScheme, rule_obj)
         return rule_obj
 
     def parseOr(self, ruleScheme):
         rule_obj = Rule()
-        rule_obj.rule = [self.parser(item) for item in ruleScheme[Type.OR]]
+        rule_obj.type = Type.OR
+        rule_obj.rule = [self.parser(item) for item in ruleScheme[Type.OR.value]]
         self.messages(ruleScheme, rule_obj)
         return rule_obj
 
     def parseAny(self, ruleScheme):
         rule_obj = Rule()
         rule_obj.type = Type.ANY
-        rule_obj.path = ruleScheme[rule_obj.type]
+        rule_obj.path = ruleScheme[rule_obj.type.value]
         if "rule" in ruleScheme:
             rule_obj.rule = self.parser(ruleScheme["rule"])
         else:
@@ -104,7 +113,7 @@ class RuleParser:
     def parseAll(self, ruleScheme):
         rule_obj = Rule()
         rule_obj.type = Type.ALL
-        rule_obj.path = ruleScheme[rule_obj.type]
+        rule_obj.path = ruleScheme[rule_obj.type.value]
         if "rule" in ruleScheme:
             rule_obj.rule = self.parser(ruleScheme["rule"])
         else:
@@ -113,10 +122,13 @@ class RuleParser:
         return rule_obj
 
     def messages(self, ruleScheme, rule_obj):
-        if MessageType.SUCCESS_MSG in ruleScheme:
-            rule_obj.success_msg = ruleScheme[MessageType.SUCCESS_MSG]
-        if MessageType.FAIL_MSG in ruleScheme:
-            rule_obj.fail_msg = ruleScheme[MessageType.FAIL_MSG]
+        if MessageType.SUCCESS_MSG.value in ruleScheme:
+            rule_obj.success_msg = ruleScheme[MessageType.SUCCESS_MSG.value]
+        if MessageType.FAIL_MSG.value in ruleScheme:
+            rule_obj.fail_msg = ruleScheme[MessageType.FAIL_MSG.value]
+
+
+
 
 #TODO: can give us an indicate of error location in the yaml file
 # import yaml

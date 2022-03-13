@@ -143,6 +143,7 @@ paths:
           required: true
           schema:
             type: string
+      security: "abcd"
       requestBody:
         content:
           application/json:
