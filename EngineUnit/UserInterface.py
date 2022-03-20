@@ -4,7 +4,7 @@ def ui()-> argparse.Namespace:
     menu = argparse.ArgumentParser(
         description='This project should score given open api spec and explain where is the vulnerable fields',
         epilog='\u00a9 2022')
-    #menu.add_argument('-V', '--verbose', action='count', default=2)
+    menu.add_argument('-v', '--verbose', action='store_true', help='show debug information')
 
     menu.add_argument('-a', '--api_scheme', required=True, type=str,
                       help='path for open api scheme (yaml file)')

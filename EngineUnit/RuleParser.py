@@ -1,16 +1,17 @@
 import json
 from enums import Type, Operator, MessageType
 from Rule import Rule
-from SchemePath import SchemePath
+from glob import glob
 
 
 class RuleParser:
-    def __init__(self, rule_path):
+    def __init__(self, rule_path,is_dir:bool = True):
         self.rule_path = rule_path
         self.__operators_should_contain_value = [Operator.LESS_THAN, Operator.GREATER_THAN, Operator.EQUAL,
                                                  Operator.ANY, Operator.CONTAIN]
         self.rule_scheme = None
         self.rules = []
+        self.is_dir = is_dir
         self.type_dict = {Type.BASE: self.parseBase,
                           Type.ALL: self.parseAll,
                           Type.ANY: self.parseAny,
@@ -18,16 +19,23 @@ class RuleParser:
                           Type.OR: self.parseOr,
                           Type.CONDITION: self.parseCondition
                          }
+        if self.is_dir:
+            self.readJsonDir()
+        else:
+            self.readJson(self.rule_path)
 
-        self.readJson()
-        self.callingToParser()
-
-    def readJson(self):
+    def readJson(self,path):
         try:
-            with open(self.rule_path) as file:
+            with open(path) as file:
                 self.rule_scheme = json.load(file)
+            self.callingToParser()
         except Exception as err:
             print(f'ERROR during reading json file: {err}')
+            raise err
+
+    def readJsonDir(self):
+        for path in glob(self.rule_path+"/*.json"):
+            self.readJson(path)
 
     def callingToParser(self):
         if "rules" in self.rule_scheme:

@@ -1,18 +1,6 @@
 from enums import Type,Operator
 from SchemePath import PathData, SchemePath
-count = 0
-def debug(func):
-
-    def inner(*args,**kwargs):
-        global count
-        count+=1
-        # print(count*" " ,f"before: {func.__name__}, args: {args[-1].args}, path: {args[0].path}")
-        var = func(*args,**kwargs)
-        # print(count*" " ,f"after: {var}-->belong to func name: {func.__name__}")
-        count -= 1
-
-        return var
-    return inner
+from Logs import debug
 
 class Rule:
 
