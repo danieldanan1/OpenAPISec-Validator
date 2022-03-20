@@ -102,9 +102,8 @@ Result: List
 [{
   'operationId': 'addMediaIntentHandling',
   'summary': 'addMedia'
-  },
-	
-  {
+},
+{
    'operationId': 'playMediaIntentHandling'
    'summary': 'playMedia'
 }]
