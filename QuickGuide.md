@@ -125,6 +125,14 @@ Result: String/Dict [schema]
 - The rule represent a logic unit use to analyze given openapi3 schema and return boolean value  
 - [optional] Each rule can print a message in case of success/failure
 
+#### rule list:
+- base
+- or
+- and
+- condition
+- any
+- all  
+
 #### Messages
 each rule can contain the optional keys  
 - **success_msg**: print when rule return true

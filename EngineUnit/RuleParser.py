@@ -1,6 +1,8 @@
 import json
 from enums import Type, Operator, MessageType
 from Rule import Rule
+from SchemePath import SchemePath
+
 
 class RuleParser:
     def __init__(self, rule_path):
@@ -10,15 +12,15 @@ class RuleParser:
         self.rule_scheme = None
         self.rules = []
         self.type_dict = {Type.BASE: self.parseBase,
-                     Type.ALL: self.parseAll,
-                     Type.ANY: self.parseAny,
-                     Type.AND: self.parseAnd,
-                     Type.OR: self.parseOr,
-                     Type.CONDITION: self.parseCondition,
-
-                     }
+                          Type.ALL: self.parseAll,
+                          Type.ANY: self.parseAny,
+                          Type.AND: self.parseAnd,
+                          Type.OR: self.parseOr,
+                          Type.CONDITION: self.parseCondition
+                         }
 
         self.readJson()
+        self.callingToParser()
 
     def readJson(self):
         try:
@@ -51,7 +53,7 @@ class RuleParser:
 
 
     def parseBase(self, ruleScheme):
-        rule_elements = ruleScheme.split(",")
+        rule_elements = ruleScheme.split(",")#TODO:add support on list
         rule_elements_size = len(rule_elements)-2
         rule_obj = Rule()
         rule_obj.type = Type.BASE

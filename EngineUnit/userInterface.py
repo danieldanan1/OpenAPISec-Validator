@@ -6,7 +6,7 @@ def ui()-> argparse.Namespace:
         epilog='\u00a9 2022')
     #menu.add_argument('-V', '--verbose', action='count', default=2)
 
-    menu.add_argument('-a', '--api_scheme',required=True, type=str,
+    menu.add_argument('-a', '--api_scheme', required=True, type=str,
                       help='path for open api scheme (yaml file)')
 
 
