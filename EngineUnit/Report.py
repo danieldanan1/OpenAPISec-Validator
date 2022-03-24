@@ -19,4 +19,7 @@ class Report:
     def createReport(self):
         date = datetime.now().strftime("%Y_%m_%d-%H_%M_%S")
         with open(f"{self.report_path}/report_{date}.md",'w') as f:
-            f.write(self.report_text)
+            if self.report_text.strip() == "":
+                f.write(self.__readGuideMessage("success"))
+            else:
+                f.write(self.report_text)
