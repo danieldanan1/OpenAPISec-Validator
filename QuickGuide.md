@@ -64,7 +64,51 @@ Result: List
            }
 }]
 ```  
-#### 3. Path contain a list 
+
+#### 3 Path point to list and end with %
+For example: paths./configuration.get.parameters% is point to list as one parmeter of parameters  
+Result: one element contain a list  
+```yaml
+[{
+  'in': 'header', 
+  'name': 'x-applecloudextension-session-id', 
+  'required': True, 
+  'schema': 
+           {
+             'maxLength': 128, 
+             'minLength': 1, 
+             'type': 'string'
+           }
+},
+{
+  'in': 'header', 
+  'name': 'x-applecloudextension-retry-count', 
+  'required': False, 
+  'schema': 
+           {
+             'format': 'uint32', 
+             'minimum': 1, 
+             'type': 'number'
+           }
+}]
+```
+Another example for this specific scenario:
+```yaml
+security:
+  - OAuth2:
+    - read
+    - write
+```
+Result:
+```python
+[
+    "read",
+    "write"
+]
+```
+
+
+#### 4. Path contain a list 
 For example: paths./configuration.get.parameters.schema.type is contain a list of parameters  
 Result: List
 ```python
@@ -90,7 +134,7 @@ paths:
       summary: playMedia
 ```
 
-#### 4. Path contain variable [placeholder]  
+#### 5. Path contain variable [placeholder]  
 Path will use '#' symbol when you expect to get all parameters that exist under your path  
 > Note: all elements that shouldn't match to your path pattern doesn't response as a result 
 
@@ -109,7 +153,7 @@ Result: List
 }]
 ```
 
-#### 5. Path contain variable    
+#### 6. Path contain variable    
 Path will use '$' symbol when you expect to get a specific parameter that exist under your path  
 > Note: when using '$' you should pay attention for his 'father' rule that contain '#' symbol in same name
 

@@ -7,10 +7,10 @@ def debug(func):
         global count
         count+=1
         if menu.verbose:
-            print(count*" " ,f"before: {func.__name__}, args: {args[-1].args}, path: {args[0].path}")
+            print(count*5*" " ,f"before: {func.__name__}, args: {args[-1].args}, path: {args[0].path}, {args[0].operator}")
         var = func(*args,**kwargs)
         if menu.verbose:
-            print(count*" " ,f"after: {var}-->belong to func name: {func.__name__}")
+            print(count*5*" " ,f"after: {var}-->belong to func name: {func.__name__}")
         count -= 1
 
         return var

@@ -4,13 +4,13 @@
       "and": [
         "security,exist,fail_msg=BrokenObjectLevelAuthentication/global_security",
         {
-          "all": "security.#authMethod",
+          "all": "security.#authMethod%",
           "rule": {
             "and": [
-              "components.securitySchemes.$authMethod,exist.fail_msg=BrokenObjectLevelAuthentication/authentication_label",
-              "components.securitySchemes.$authMethod.type,any,[oauth1,oauth2],fail_msg=BrokenObjectLevelAuthentication/authentication_method",
+              "components.securitySchemes.$authMethod,exist,fail_msg=BrokenObjectLevelAuthentication/authentication_method",
+              "components.securitySchemes.$authMethod.type,any,[oauth1,oauth2],fail_msg=BrokenObjectLevelAuthentication/authentication_type",
               {
-                "all": "security.$authMethod.#permission",
+                "all": "security.$authMethod.#permission%",
                 "rule": "components.securitySchemes.$authMethod.flows.authorizationCode.scopes.$permission,exist,fail_msg=BrokenObjectLevelAuthentication/authentication_permissions"
               }
             ]

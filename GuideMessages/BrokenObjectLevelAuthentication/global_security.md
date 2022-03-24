@@ -3,5 +3,5 @@
 As represent below add label and scope permissions  
 ```yaml
 security:
-
+   - OAuth2:
 ```

@@ -7,8 +7,8 @@ from glob import glob
 class RuleParser:
     def __init__(self, rule_path,is_dir:bool = True):
         self.rule_path = rule_path
-        self.__operators_should_contain_value = [Operator.LESS_THAN, Operator.GREATER_THAN, Operator.EQUAL,
-                                                 Operator.ANY, Operator.CONTAIN]
+        self.__operators_should_contain_value = [Operator.LESS_THAN.value, Operator.GREATER_THAN.value, Operator.EQUAL.value,
+                                                 Operator.ANY.value, Operator.CONTAIN.value]
         self.rule_scheme = None
         self.rules = []
         self.is_dir = is_dir
@@ -23,6 +23,7 @@ class RuleParser:
             self.readJsonDir()
         else:
             self.readJson(self.rule_path)
+
 
     def readJson(self,path):
         try:
@@ -61,27 +62,45 @@ class RuleParser:
 
 
     def parseBase(self, ruleScheme):
-        rule_elements = ruleScheme.split(",")#TODO:add support on list
+        rule_elements = self.ruleSplit(ruleScheme)
         rule_elements_size = len(rule_elements)-2
         rule_obj = Rule()
         rule_obj.type = Type.BASE
         rule_obj.path = rule_elements[0]
         rule_obj.operator = Operator(rule_elements[1])
-        if (rule_elements_size > 0) and (rule_elements[2] in self.__operators_should_contain_value):
+        if (rule_elements_size > 0) and (rule_elements[1] in self.__operators_should_contain_value):
             rule_obj.value = rule_elements[2]
             rule_elements_size -= 1
         #print(rule_obj.type)
         for i in range(1,rule_elements_size+1):
             msg_type, msg_content = rule_elements[-i].split("=")
+            # print(msg_type, msg_content,type(msg_type), type(msg_content),rule_elements[-i],type(rule_elements[-i]))
             match msg_type:
                 case MessageType.SUCCESS_MSG.value:
-                    rule_obj.success_msg = msg_content,
+                    rule_obj.success_msg = msg_content
                 case MessageType.FAIL_MSG.value:
-                    rule_obj.fail_msg = msg_content,
+                    rule_obj.fail_msg = msg_content
                 case _:
                     raise f"message type is not exist\nPlease use one of this types: {','.join(i.value for i in MessageType)}"
         return rule_obj
 
+    def ruleSplit(self,data,delimiter:str = ',',start:str ='[' ,end:str = ']'):
+        in_range = False
+        result = []
+        element = ""
+        for char in data:
+            if char == delimiter and not in_range:
+                result.append(element)
+                element = ""
+            elif char == start:
+                in_range = True
+            elif char == end:
+                in_range = False
+                element = element.split(delimiter)
+            else:
+                element += char
+        result.append(element)
+        return result
 
     def parseCondition(self, ruleScheme):
         rule_obj = Rule()
