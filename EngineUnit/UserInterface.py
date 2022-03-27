@@ -1,6 +1,10 @@
 import argparse
 
 def ui()-> argparse.Namespace:
+    """
+    function to run user interface in the cli to get user input
+    :return: object contain the user input in the ui
+    """
     menu = argparse.ArgumentParser(
         description='This project should score given open api spec and explain where is the vulnerable fields',
         epilog='\u00a9 2022')

@@ -13,11 +13,3 @@ if __name__ == "__main__":
     for rule in parser.rules:
         rule.run(open_api.spec)
 
-
-#print(a.spec,type(a.spec))
-    # schemePath = SchemePath("paths./configuration/michael.get.parameters.schema")
-    # schemePath = SchemePath('paths.$path.#method')
-    #
-    # # results = parser.rules
-    # results = schemePath.getPath(open_api.spec, {'path': '/configuration/michael'})
-    # print(*results, sep="\n")

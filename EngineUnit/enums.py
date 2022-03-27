@@ -1,6 +1,8 @@
 import enum
 
-
+"""
+list of the optional rule
+"""
 class Type(enum.Enum):
     BASE = "basse"
     CONDITION = "condition"
@@ -9,10 +11,9 @@ class Type(enum.Enum):
     ANY = "any"
     ALL = "all"
 
-    # def __str__(self):
-    #     return ', '.join(item.value for item in Type)
-
-
+"""
+list of the optional operator in base rule
+"""
 class Operator(enum.Enum):
     EXIST = "exist"
     NOT_EXIST = "not_exist"
@@ -22,13 +23,10 @@ class Operator(enum.Enum):
     ANY = "any"
     CONTAIN = "contain"
 
-    # def __str__(self):
-    #     return ', '.join(item.value for item in Operator)
 
-
+"""
+list of the optional messages
+"""
 class MessageType(enum.Enum):
     SUCCESS_MSG = "success_msg"
     FAIL_MSG = "fail_msg"
-
-    # def __str__(self):
-    #     return ', '.join(item.value for item in MessageType)

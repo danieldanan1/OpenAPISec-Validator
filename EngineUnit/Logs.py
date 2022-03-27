@@ -3,6 +3,10 @@ count = 0
 
 
 def debug(func):
+    """
+    decorator to debug the rule
+    run the debug print only if the verbose flag in on
+    """
     def inner(*args,**kwargs):
         global count
         count+=1

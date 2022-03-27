@@ -1,5 +1,12 @@
 class PathData:
+    """
+    data structure contain open api scheme (sub scheme) and the variable define in the parents of the current scheme
+    """
     def __init__(self, scheme: dict, args: dict):
+        """
+        :param scheme: open api scheme (sub scheme)
+        :param args: the variable define in the parents of the current scheme
+        """
         self.scheme: dict = scheme
         self.args: dict = args
 
@@ -8,6 +15,9 @@ class PathData:
 
 
 class SchemePath:
+    """
+    this class should assist complex path calculations
+    """
     def __init__(self, path:str):
         self.path = path
         self.__result =[]
@@ -15,6 +25,15 @@ class SchemePath:
         self.__result_is_value = False
     #TODO relative Path in the scheme
     def getPath(self, scheme: dict, args:dict={}):
+        """
+        calculate the path of self.path in the open api scheme
+        :param scheme: the open api scheme
+        :param args: the variable define in the path
+        :return:  PathData | list[PathData] or None
+        if the path point to list return list[PathData]
+        if the path point to specific element return PathData
+        else if the epath not exist return None
+        """
         self.__result = []
         if(self.path.endswith('%')):
             self.__result_is_value = True
@@ -26,6 +45,13 @@ class SchemePath:
         return None
 
     def __getPathRec(self, path: list, scheme: dict, args:dict={}):
+        """
+        recursive function used by getPath
+        :param path: list of element in the path
+        :param scheme: the current sub scheme of the open api
+        :param args: the variable define in the path
+        :return:
+        """
         while len(path) > 0:
             if scheme is None:
                 return
