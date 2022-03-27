@@ -31,7 +31,7 @@ class Rule:
             Operator.NOT_EXIST :lambda path_data: path_data is None or (not (isinstance(path_data,list)) or path_data.scheme is None),
             Operator.LESS_THAN : lambda path_data : int(path_data.scheme) > int(self.value),
             Operator.GREATER_THAN : lambda path_data : int(path_data.scheme) < int(self.value),
-            Operator.EQUAL :lambda path_data : int(path_data.scheme) == int(self.value),
+            Operator.EQUAL :lambda path_data : path_data.scheme == self.value,
             Operator.ANY : lambda path_data :path_data.scheme in self.value,
             Operator.CONTAIN : lambda path_data : self.value in str(path_data.scheme)
         }
