@@ -5,7 +5,15 @@ from glob import glob
 
 
 class RuleParser:
+    """
+    the class parse the rule files and return list of Rules
+    """
     def __init__(self, rule_path,is_dir:bool = True):
+        """
+
+        :param rule_path: str the path to rule file
+        :param is_dir: bool indication if the path is dir or a file
+        """
         self.rule_path = rule_path
         self.__operators_should_contain_value = [Operator.LESS_THAN.value, Operator.GREATER_THAN.value, Operator.EQUAL.value,
                                                  Operator.ANY.value, Operator.CONTAIN.value]
@@ -26,6 +34,11 @@ class RuleParser:
 
 
     def readJson(self,path):
+        """
+        read rule file and run the parser
+        :param path: str the file path
+        :return: void
+        """
         try:
             with open(path) as file:
                 self.rule_scheme = json.load(file)
@@ -35,10 +48,18 @@ class RuleParser:
             raise err
 
     def readJsonDir(self):
+        """
+        read folder of rules files
+        :return:
+        """
         for path in glob(self.rule_path+"/*.json"):
             self.readJson(path)
 
     def callingToParser(self):
+        """
+        start the parsing process and save the result in self.rules
+        :return: void
+        """
         if "rules" in self.rule_scheme:
             for ruleScheme in self.rule_scheme["rules"]:
                 self.rules.append(self.parser(ruleScheme))
@@ -46,6 +67,11 @@ class RuleParser:
             self.rules.append(self.parser(self.rule_scheme))
 
     def parser(self, ruleScheme):
+        """
+        parse specific rule in the file
+        :param ruleScheme: dict the current rule scheme the parser run
+        :return: Rule the function parse
+        """
         rule:Rule
 
         if type(ruleScheme) is str:
@@ -85,6 +111,14 @@ class RuleParser:
         return rule_obj
 
     def ruleSplit(self,data,delimiter:str = ',',start:str ='[' ,end:str = ']'):
+        """
+        split the base rule to element
+        :param data: str contain the row data of the base rule
+        :param delimiter: str the delimiter for separate between the element
+        :param start: the starting char of list defenestration if exist
+        :param end: the ending char of list defenestration if exist
+        :return: list containing the element of the base rule
+        """
         in_range = False
         result = []
         element = ""

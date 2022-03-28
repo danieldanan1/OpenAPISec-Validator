@@ -12,3 +12,4 @@ if __name__ == "__main__":
     parser = RuleParser(file,is_dir)
     for rule in parser.rules:
         rule.run(open_api.spec)
+        rule.run(open_api.spec)
