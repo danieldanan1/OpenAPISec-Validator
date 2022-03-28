@@ -8,7 +8,11 @@
           "rule": {
             "and": [
               "components.securitySchemes.$authMethod,exist,fail_msg=BrokenObjectLevelAuthentication/authentication_method",
-              "components.securitySchemes.$authMethod.type,any,[oauth1,oauth2],fail_msg=BrokenObjectLevelAuthentication/authentication_type",
+              "components.securitySchemes.$authMethod.type,any,[http,apiKey,openIdConnect,oauth2],fail_msg=BrokenObjectLevelAuthentication/authentication_type",
+              {
+                "condition": "components.securitySchemes.$authMethod.type,eq,http",
+                "true": "components.securitySchemes.$authMethod.scheme,any,[basic,bearer,digest,hoba,mutual,negotiate,oauth2,scramSha1,scramSha256,vapid],fail_msg=BrokenObjectLevelAuthentication/authentication_type"
+              },
               {
                 "all": "security.$authMethod.#permission%",
                 "rule": "components.securitySchemes.$authMethod.flows.authorizationCode.scopes.$permission,exist,fail_msg=BrokenObjectLevelAuthentication/authentication_permissions"

@@ -22,7 +22,7 @@ tags:
   - name: intent
   - name: queues
 paths:
-  /configuration/michael:
+  /configuration:
     get:
       operationId: extensionConfiguration
       parameters:
