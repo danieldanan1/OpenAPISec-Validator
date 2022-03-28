@@ -1,7 +1,6 @@
 ####Broken Object Level Authentication  
-**Please add security method as value of "type" key**  
-You can choose method from this list: http, apiKey, openIdConnect, oauth2   
-For more information: https://swagger.io/docs/specification/authentication/    
+**When you're using "type" as http you should choose method key**  
+You can choose method from this list: 
 https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml  
 As represent below 
 ```yaml
@@ -12,5 +11,6 @@ security:
 components:
   securitySchemes:
     OAuth2:
-      type: oauth2
+      type: http
+      scheme: basic
 ```

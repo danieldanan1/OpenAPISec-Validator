@@ -1,6 +1,5 @@
 ####Broken Object Level Authentication  
-**Please add to securitySchemes relevant permissions you defined in global security**  
-You can choose method from this link:  https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml  
+**Please add to securitySchemes relevant permissions you defined in security label**  
 As represent below 
 ```yaml
 security:
