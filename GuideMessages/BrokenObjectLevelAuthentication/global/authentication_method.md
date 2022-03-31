@@ -1,5 +1,5 @@
 ####Broken Object Level Authentication  
-Please add security method as value of "OAuth2" under components/securitySchemes a already defined   
+Please add authentication method as value of "OAuth2" under components/securitySchemes as already defined   
 As represent below 
 ```yaml
 security:
